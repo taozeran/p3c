@@ -15,6 +15,7 @@
  */
 package com.alibaba.p3c.pmd.lang.java.rule.other;
 
+import net.sourceforge.pmd.Rule;
 import net.sourceforge.pmd.testframework.SimpleAggregatorTst;
 import org.junit.Test;
 
@@ -37,6 +38,7 @@ public class OtherRulesTest extends SimpleAggregatorTst {
         addRule(RULESET, "AvoidMissUseOfMathRandomRule");
         addRule(RULESET, "MethodTooLongRule");
         addRule(RULESET,"UseRightCaseForDateFormatRule");
+        addRule(RULESET,"AvoidCallAnnotatedMethodInSameClass");
     }
 
     @Test
@@ -44,5 +46,11 @@ public class OtherRulesTest extends SimpleAggregatorTst {
         runTests(findRule(RULESET, "UseRightCaseForDateFormatRule"));
     }
 
+
+    @Test
+    public void testAvoidCallAnnotatedMethodInSameClassRule() {
+        Rule rule = findRule(RULESET, "AvoidCallAnnotatedMethodInSameClass");
+        runTests(rule,"AvoidCallAnnotatedMethodInSameClass");
+    }
 
 }

@@ -56,6 +56,14 @@
         <![CDATA[返回类型为基本数据类型，return包装数据类型的对象时，自动拆箱有可能产生NPE]]>
     </entry>
 
+    <entry key="java.other.AvoidCallAnnotatedMethodInSameClass.violation.msg">
+        <![CDATA[在类内部调用带有spring注解的方法]]>
+    </entry>
+
+    <entry key="java.other.AvoidCallAnnotatedMethodInSameClass.rule.msg">
+        <![CDATA[不要在类内部调用带有spring注解的方法，这种调用方式中注解不生效]]>
+    </entry>
+
     <entry key="java.exception.TransactionMustHaveRollbackRule.violation.msg.simple">
         <![CDATA[注解【Transactional】需要设置rollbackFor属性。]]>
     </entry>

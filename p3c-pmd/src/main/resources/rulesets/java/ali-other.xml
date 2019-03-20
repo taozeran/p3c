@@ -5,12 +5,12 @@
     xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
 
     <rule name="AvoidPatternCompileInMethodRule" language="java"
-        message="java.other.AvoidPatternCompileInMethodRule.rule.msg"
-        class="com.alibaba.p3c.pmd.lang.java.rule.other.AvoidPatternCompileInMethodRule">
+          message="java.other.AvoidPatternCompileInMethodRule.rule.msg"
+          class="com.alibaba.p3c.pmd.lang.java.rule.other.AvoidPatternCompileInMethodRule">
         <description>java.other.AvoidPatternCompileInMethodRule.rule.desc</description>
         <priority>1</priority>
         <example>
-<![CDATA[
+            <![CDATA[
     public class XxxClass {
         // Use precompile
         private static Pattern NUMBER_PATTERN = Pattern.compile("[0-9]+");
@@ -21,8 +21,42 @@
         }
     }
 ]]>
-      </example>
+        </example>
     </rule>
+
+
+    <rule name="AvoidCallAnnotatedMethodInSameClass" language="java"
+          message="java.other.AvoidCallAnnotatedMethodInSameClass.rule.msg"
+          class="com.alibaba.p3c.pmd.lang.java.rule.other.AvoidCallAnnotatedMethodInSameClass">
+        <description>java.other.AvoidPatternCompileInMethodRule.rule.desc</description>
+        <priority>2</priority>
+        <example>
+            <![CDATA[
+            import org.springframework.stereotype.Component;
+            import org.springframework.transaction.annotation.Transactional;
+
+            @Component
+            public class Test {
+            @Transactional(rollbackFor = Exception.class)
+                public void printA() {
+                    System.out.println();
+                }
+
+                public void printB() {
+                    System.out.println();
+                    printA();
+                    System.out.println();
+                }
+
+                public void printC() {
+                    printA();
+                }
+            }
+        ]]>
+        </example>
+    </rule>
+
+
 
     <rule name="AvoidApacheBeanUtilsCopyRule" language="java"
         message="java.other.AvoidApacheBeanUtilsCopyRule.rule.msg"
