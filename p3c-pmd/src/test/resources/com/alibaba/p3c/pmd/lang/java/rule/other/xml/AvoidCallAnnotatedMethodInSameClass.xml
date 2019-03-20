@@ -2,33 +2,34 @@
 <test-data>
 
 	<code-fragment id="use-annotated-method-in-same-class"><![CDATA[
-package one.show.api;
+		package one.show;
 
+		import org.springframework.stereotype.Component;
+		import org.springframework.transaction.annotation.Transactional;
 
-import static one.show.schedule.biz.MarketSchedule.MARKET_KEY;
+		@Component
+		public class Test {
+			@Transactional(rollbackFor = Exception.class)
+			public void printA() {
+				System.out.println();
+			}
 
-@Controller
-@RequestMapping(path = "/market")
-public class MarketApi {
-    @RequestMapping(value = "/market",method = RequestMethod.GET)
-    public ResponseEntity<ResponseWrapper> market(int a){
-        JSONObject market = marketService.market();
-        return ResponseUtils.wrapResponse(market);
-    }
+			public void printB() {
+				System.out.println();
+				printA();
+				System.out.println();
+			}
 
-     @RequestMapping(value = "/kline",method = RequestMethod.GET)
-    public ResponseEntity<ResponseWrapper> kline(){
-        String result = restTemplate.getForObject("https://www.okex.com/api/v1/kline.do?symbol=show_usdt&type=1day", String.class);
-        JSONObject market = new JSONObject();
-    }
-}
-
+			public void printC() {
+				printA();
+			}
+		}
     ]]>
 	</code-fragment>
 
 	<test-code>
 		<description>Use annotated method in same class</description>
-		<expected-problems>0</expected-problems>
+		<expected-problems>2</expected-problems>
 		<code-ref id="use-annotated-method-in-same-class" />
 	</test-code>
 
