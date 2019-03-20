@@ -2,38 +2,33 @@
 <test-data>
 
 	<code-fragment id="use-annotated-method-in-same-class"><![CDATA[
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+package one.show.api;
 
-@Component
-public class Test {
-    @Transactional(rollbackFor = Exception.class)
-    public void printA() {
-        System.out.println();
+
+import static one.show.schedule.biz.MarketSchedule.MARKET_KEY;
+
+@Controller
+@RequestMapping(path = "/market")
+public class MarketApi {
+    @RequestMapping(value = "/market",method = RequestMethod.GET)
+    public ResponseEntity<ResponseWrapper> market(int a){
+        JSONObject market = marketService.market();
+        return ResponseUtils.wrapResponse(market);
     }
 
-    public void printB() {
-        System.out.println();
-        printA();
-        System.out.println();
-    }
-
-    public void printC() {
-        printA();
-    }
-
-    public void printD() {
-    	System.out.println();
-    	System.out.println();
-        printA();
+     @RequestMapping(value = "/kline",method = RequestMethod.GET)
+    public ResponseEntity<ResponseWrapper> kline(){
+        String result = restTemplate.getForObject("https://www.okex.com/api/v1/kline.do?symbol=show_usdt&type=1day", String.class);
+        JSONObject market = new JSONObject();
     }
 }
+
     ]]>
 	</code-fragment>
 
 	<test-code>
 		<description>Use annotated method in same class</description>
-		<expected-problems>3</expected-problems>
+		<expected-problems>0</expected-problems>
 		<code-ref id="use-annotated-method-in-same-class" />
 	</test-code>
 

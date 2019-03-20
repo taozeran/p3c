@@ -12,11 +12,18 @@ public class AvoidCallAnnotatedMethodInSameClass extends AbstractAliRule {
         List<ASTClassOrInterfaceBodyDeclaration> bodyDeclarations = node.findChildrenOfType(ASTClassOrInterfaceBodyDeclaration.class);
         for (ASTClassOrInterfaceBodyDeclaration bodyDeclaration : bodyDeclarations) {
             ASTMethodDeclarator astMethodDeclarator = bodyDeclaration.getFirstDescendantOfType(ASTMethodDeclarator.class);
+            if (astMethodDeclarator == null) {
+                continue;
+            }
             String methodName = astMethodDeclarator.getImage();
-            List<ASTAnnotation> descendants = bodyDeclaration.findDescendantsOfType(ASTAnnotation.class);
-            if (!descendants.isEmpty()) {
-                List<ASTName> astNames = node.findDescendantsOfType(ASTName.class);
-                for (ASTName astName : astNames) {
+            List<ASTNormalAnnotation> astAnnotations = bodyDeclaration.findDescendantsOfType(ASTNormalAnnotation.class);
+            if (!astAnnotations.isEmpty()) {
+                List<ASTBlockStatement> astBlockStatements = node.findDescendantsOfType(ASTBlockStatement.class);
+                for (ASTBlockStatement astBlockStatement : astBlockStatements) {
+                    ASTName astName = astBlockStatement.getFirstDescendantOfType(ASTName.class);
+                    if (astName == null) {
+                        continue;
+                    }
                     String image = astName.getImage();
                     if (image.equals(methodName)) {
                         addViolationWithMessage(data, astName,"java.other.AvoidCallAnnotatedMethodInSameClass.violation.msg");
