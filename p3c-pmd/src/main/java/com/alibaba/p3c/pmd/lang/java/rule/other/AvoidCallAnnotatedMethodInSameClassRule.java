@@ -27,6 +27,7 @@ public class AvoidCallAnnotatedMethodInSameClassRule extends AbstractAliRule {
             for (ASTAnnotation astAnnotation : astAnnotations) {
                 ASTName astName = astAnnotation.getFirstDescendantOfType(ASTName.class);
                 String image = astName.getImage();
+
                 for (String s : ANNOTATION_SET) {
                     if (s.equals(image)) {
                         break exFor;
