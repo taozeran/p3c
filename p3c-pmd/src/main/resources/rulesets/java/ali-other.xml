@@ -25,9 +25,9 @@
     </rule>
 
 
-    <rule name="AvoidCallAnnotatedMethodInSameClass" language="java"
-          message="java.other.AvoidCallAnnotatedMethodInSameClass.rule.msg"
-          class="com.alibaba.p3c.pmd.lang.java.rule.other.AvoidCallAnnotatedMethodInSameClass">
+    <rule name="AvoidCallAnnotatedMethodInSameClassRule" language="java"
+          message="java.other.AvoidCallAnnotatedMethodInSameClassRule.rule.msg"
+          class="com.alibaba.p3c.pmd.lang.java.rule.other.AvoidCallAnnotatedMethodInSameClassRule">
         <description>java.other.AvoidPatternCompileInMethodRule.rule.desc</description>
         <priority>2</priority>
         <example>

@@ -5,7 +5,7 @@ import net.sourceforge.pmd.lang.java.ast.*;
 
 import java.util.List;
 
-public class AvoidCallAnnotatedMethodInSameClass extends AbstractAliRule {
+public class AvoidCallAnnotatedMethodInSameClassRule extends AbstractAliRule {
 
     @Override
     public Object visit(ASTClassOrInterfaceBody node, Object data) {

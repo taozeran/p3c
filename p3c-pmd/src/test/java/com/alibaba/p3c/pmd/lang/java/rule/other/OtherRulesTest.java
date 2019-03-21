@@ -38,7 +38,7 @@ public class OtherRulesTest extends SimpleAggregatorTst {
         addRule(RULESET, "AvoidMissUseOfMathRandomRule");
         addRule(RULESET, "MethodTooLongRule");
         addRule(RULESET,"UseRightCaseForDateFormatRule");
-        addRule(RULESET,"AvoidCallAnnotatedMethodInSameClass");
+        addRule(RULESET,"AvoidCallAnnotatedMethodInSameClassRule");
     }
 
     @Test
@@ -49,8 +49,8 @@ public class OtherRulesTest extends SimpleAggregatorTst {
 
     @Test
     public void testAvoidCallAnnotatedMethodInSameClassRule() {
-        Rule rule = findRule(RULESET, "AvoidCallAnnotatedMethodInSameClass");
-        runTests(rule,"AvoidCallAnnotatedMethodInSameClass");
+        Rule rule = findRule(RULESET, "AvoidCallAnnotatedMethodInSameClassRule");
+        runTests(rule,"AvoidCallAnnotatedMethodInSameClassRule");
     }
 
 }
