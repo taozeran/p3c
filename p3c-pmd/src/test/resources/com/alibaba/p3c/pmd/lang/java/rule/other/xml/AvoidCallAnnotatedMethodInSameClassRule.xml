@@ -9,6 +9,7 @@
 
 		@Component
 		public class Test {
+			@Async
 			@Transactional(rollbackFor = Exception.class)
 			public void printA() {
 				System.out.println();
