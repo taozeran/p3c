@@ -43,7 +43,7 @@ public class AvoidCallAnnotatedMethodInSameClassRule extends AbstractAliRule {
                     }
                     String image = astName.getImage();
                     if (image.equals(methodName)) {
-                        addViolationWithMessage(data, astName,"java.other.AvoidCallAnnotatedMethodInSameClass.violation.msg");
+                        addViolationWithMessage(data, astName,"java.other.AvoidCallAnnotatedMethodInSameClassRule.violation.msg");
                     }
                 }
             }
