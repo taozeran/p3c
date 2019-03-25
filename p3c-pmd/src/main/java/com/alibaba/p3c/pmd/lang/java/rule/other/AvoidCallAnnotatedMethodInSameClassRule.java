@@ -14,6 +14,7 @@ public class AvoidCallAnnotatedMethodInSameClassRule extends AbstractAliRule {
 
     @Override
     public Object visit(ASTClassOrInterfaceBody node, Object data) {
+        System.out.println("new version 1");
         List<ASTClassOrInterfaceBodyDeclaration> bodyDeclarations = node.findChildrenOfType(ASTClassOrInterfaceBodyDeclaration.class);
         body:
         for (ASTClassOrInterfaceBodyDeclaration bodyDeclaration : bodyDeclarations) {
@@ -46,23 +47,39 @@ public class AvoidCallAnnotatedMethodInSameClassRule extends AbstractAliRule {
                     String image = astName.getImage();
                     if (image.equals(methodName)) {
                         ASTArguments astArguments = astBlockStatement.getFirstDescendantOfType(ASTArguments.class);
+                        int argumentCount = astArguments.getArgumentCount();
+                        int size = argsTypes.size();
+                        if (argumentCount!=size) {
+                            continue;
+                        }
+                        //当前进行比对的方法节点
+                        ASTClassOrInterfaceBodyDeclaration bodyDeclaration1 = astName.getFirstParentOfType(ASTClassOrInterfaceBodyDeclaration.class);
+                        //比对所有参数类型
                         List<ASTPrimaryPrefix> argumentsPrefix = astArguments.findDescendantsOfType(ASTPrimaryPrefix.class);
+                        int i=0;
+                        boolean isSameArgsType=true;
                         for (ASTPrimaryPrefix prefix : argumentsPrefix) {
                             String typeName=null;
                             ASTLiteral astLiteral = prefix.getFirstDescendantOfType(ASTLiteral.class);
                             if (astLiteral == null) {
                                 ASTName astName1 = prefix.getFirstDescendantOfType(ASTName.class);
                                 String arg = astName1.getImage();
-                                typeName = getVarType(node,bodyDeclaration, arg);
+                                typeName = getVarType(node,bodyDeclaration1, arg);
                             } else {
                                 Class<?> type = astLiteral.getType();
                                 typeName = type.getName();
                             }
+                            String typeImage = argsTypes.get(i).getTypeImage();
+                            if (!(typeImage.toLowerCase().equals(typeName.toLowerCase()))&&
+                                    !((typeImage.equals("int")|| typeImage.equals("Integer")) && (typeName.equals("int") || typeName.equals("Integer")))) {
+                                isSameArgsType=false;
+                                break;
+                            }
+                            i++;
                         }
-
-                        int argumentCount = astArguments.getArgumentCount();
-                        int size = argsTypes.size();
-                        addViolationWithMessage(data, astName,"java.other.AvoidCallAnnotatedMethodInSameClassRule.violation.msg");
+                        if (isSameArgsType) {
+                            addViolationWithMessage(data, astName,"java.other.AvoidCallAnnotatedMethodInSameClassRule.violation.msg");
+                        }
                     }
                 }
             }
@@ -71,6 +88,31 @@ public class AvoidCallAnnotatedMethodInSameClassRule extends AbstractAliRule {
     }
 
     private String getVarType(ASTClassOrInterfaceBody node, ASTClassOrInterfaceBodyDeclaration bodyDeclaration, String arg) {
-        return null;
+        List<ASTFieldDeclaration> descendantsOfType = node.findDescendantsOfType(ASTFieldDeclaration.class);
+        for (ASTFieldDeclaration astFieldDeclaration : descendantsOfType) {
+            ASTVariableDeclaratorId firstDescendantOfType = astFieldDeclaration.getFirstDescendantOfType(ASTVariableDeclaratorId.class);
+            if (firstDescendantOfType.getImage().equals(arg)) {
+                ASTType astType = astFieldDeclaration.getFirstDescendantOfType(ASTType.class);
+                String typeImage = astType.getTypeImage();
+                return typeImage;
+            }
+        }
+        List<ASTVariableDeclaratorId> variableDeclaratorIds = bodyDeclaration.findDescendantsOfType(ASTVariableDeclaratorId.class);
+        for (ASTVariableDeclaratorId id : variableDeclaratorIds) {
+            String image = id.getImage();
+            if (image.equals(arg)) {
+                ASTType typeNode;
+                ASTLocalVariableDeclaration localVariableDeclaration = id.getFirstParentOfType(ASTLocalVariableDeclaration.class);
+                if (localVariableDeclaration == null) {
+                    ASTFormalParameter astFormalParameter = id.getFirstParentOfType(ASTFormalParameter.class);
+                    typeNode = astFormalParameter.getTypeNode();
+                } else {
+                    typeNode = localVariableDeclaration.getTypeNode();
+                }
+                String typeImage = typeNode.getTypeImage();
+                return typeImage;
+            }
+        }
+        throw new IllegalArgumentException(arg + " is not a variable");
     }
 }

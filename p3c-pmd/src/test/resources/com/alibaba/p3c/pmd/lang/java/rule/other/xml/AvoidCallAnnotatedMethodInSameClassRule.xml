@@ -7,21 +7,28 @@
 		import org.springframework.stereotype.Component;
 		import org.springframework.transaction.annotation.Transactional;
 
+
 		@Component
 		public class Test {
+		    //private Timer time;
 			@Async
 			@Transactional(rollbackFor = Exception.class)
 			public void printA() {
 				System.out.println();
 			}
 
-			public void printB() {
+			@Async
+			public void printB(Long a,Timer b) {
 				System.out.println();
 				printA();
 				System.out.println();
 			}
 
 			public void printC() {
+				Timer time=null;
+				printB(1,time);
+				printB(1L,time);
+				printB(1);
 				printA();
 			}
 		}
@@ -30,7 +37,7 @@
 
 	<test-code>
 		<description>Use annotated method in same class</description>
-		<expected-problems>2</expected-problems>
+		<expected-problems>3</expected-problems>
 		<code-ref id="use-annotated-method-in-same-class" />
 	</test-code>
 

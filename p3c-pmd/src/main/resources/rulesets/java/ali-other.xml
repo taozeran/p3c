@@ -29,7 +29,7 @@
           message="java.other.AvoidCallAnnotatedMethodInSameClassRule.rule.msg"
           class="com.alibaba.p3c.pmd.lang.java.rule.other.AvoidCallAnnotatedMethodInSameClassRule">
         <description>java.other.AvoidPatternCompileInMethodRule.rule.desc</description>
-        <priority>2</priority>
+        <priority>1</priority>
         <example>
             <![CDATA[
             import org.springframework.stereotype.Component;
